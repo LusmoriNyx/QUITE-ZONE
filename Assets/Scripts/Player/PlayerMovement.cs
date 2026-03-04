@@ -18,11 +18,13 @@ public class PlayerMovement : MonoBehaviour
     void Component()
     {
         _controller = GetComponent<CharacterController>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
     // Update is called once per frame
     void Update()
     {
         Movement();
+        SetCamera();
     }
     private void Movement()
     {
@@ -34,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 move = transform.right * x + transform.forward * z;
 
-        if (_controller.isGrounded)
+        if (!_controller.isGrounded)
         {
             verticalVelocity += gravity * Time.deltaTime;
         }
@@ -45,5 +47,16 @@ public class PlayerMovement : MonoBehaviour
 
         move.y = verticalVelocity;
         _controller.Move(move * currentSpeed * Time.deltaTime);
+    }
+    private void SetCamera()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            EventBus.Notify("ThirdPersonCameraMode", null);
+        }
+        else if(Input.GetKeyDown(KeyCode.E))
+        {
+            EventBus.Notify("SwitchCameraMode", null);
+        }
     }
 }
