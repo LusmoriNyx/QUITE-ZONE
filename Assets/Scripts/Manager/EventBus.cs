@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EventBus 
 {
-    public static Dictionary<string, List<Action<object>>> bus = new Dictionary<string, List<Action<object>>>(); //Observer pattern
+    private static Dictionary<string, List<Action<object>>> bus = new Dictionary<string, List<Action<object>>>(); //Observer pattern
 
     public static void AddListener(string eventName, Action<object> listener)
     {
@@ -23,6 +23,10 @@ public class EventBus
             return;
         }
             bus[eventName].Remove(listener);
+    }
+    public static void ClearAll() //Clear het de tranh bi memory leak
+    {
+        bus.Clear();
     }
     public static void Notify(string eventName, object data)
     {
